@@ -1,0 +1,12 @@
+{
+  "appId": "com.vectorgrid.game",
+  "appName": "VECTOR GRID",
+  "webDir": ".",
+  "server": {
+    "iosScheme": "https"
+  },
+  "ios": {
+    "contentInset": "always",
+    "backgroundColor": "#090d12"
+  }
+}

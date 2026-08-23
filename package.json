@@ -4,8 +4,9 @@
   "private": true,
   "description": "Deterministic tactical strategy game for iOS and web.",
   "scripts": {
-    "ios:add": "npx cap add ios",
-    "ios:sync": "npx cap sync ios",
+    "ios:prepare": "node scripts/prepare-ios.mjs",
+    "ios:add": "npm run ios:prepare && npx cap add ios",
+    "ios:sync": "npm run ios:prepare && npx cap sync ios",
     "ios:open": "npx cap open ios"
   },
   "dependencies": {

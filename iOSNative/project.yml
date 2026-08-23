@@ -1,0 +1,26 @@
+name: ProjectLockstep
+options:
+  bundleIdPrefix: com.nhicksenterprises
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+targets:
+  ProjectLockstep:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: Lockstep
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.nhicksenterprises.projectlockstep
+        INFOPLIST_FILE: Lockstep/Info.plist
+        TARGETED_DEVICE_FAMILY: "1"
+        SWIFT_VERSION: "5.0"
+schemes:
+  ProjectLockstep:
+    build:
+      targets:
+        ProjectLockstep: all
+    run:
+      config: Debug

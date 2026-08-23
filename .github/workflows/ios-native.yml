@@ -1,0 +1,30 @@
+name: Build Native iOS
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'iOSNative/**'
+      - '.github/workflows/ios-native.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate Xcode project
+        working-directory: iOSNative
+        run: xcodegen generate
+      - name: Compile iPhone Simulator build
+        working-directory: iOSNative
+        run: |
+          xcodebuild \
+            -project ProjectLockstep.xcodeproj \
+            -scheme ProjectLockstep \
+            -sdk iphonesimulator \
+            -configuration Debug \
+            CODE_SIGNING_ALLOWED=NO \
+            build

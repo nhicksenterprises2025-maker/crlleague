@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#090d12" />
+  <title>VECTOR GRID — v0.1.0</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">DETERMINISTIC TACTICS / BUILD 001</div>
+        <h1>VECTOR GRID</h1>
+      </div>
+      <div class="turn-box">
+        <span id="phaseLabel">PLANNING</span>
+        <strong id="turnLabel">TURN 1</strong>
+      </div>
+    </header>
+
+    <section class="score-strip" aria-label="Match status">
+      <div class="score player-score">
+        <span>YOU</span>
+        <strong id="playerScore">0</strong>
+        <small id="playerEnergy">6 EN</small>
+      </div>
+      <div class="objective-copy">
+        FIRST TO <strong>12</strong> CONTROL
+        <span>or eliminate the enemy squad</span>
+      </div>
+      <div class="score cpu-score">
+        <small id="cpuEnergy">6 EN</small>
+        <strong id="cpuScore">0</strong>
+        <span>CPU</span>
+      </div>
+    </section>
+
+    <section class="game-layout">
+      <div class="board-panel">
+        <canvas id="gameCanvas" width="704" height="576" aria-label="VECTOR GRID tactical board"></canvas>
+        <div id="boardHint" class="board-hint">Select a unit, choose an order, then choose its target.</div>
+      </div>
+
+      <aside class="side-panel">
+        <section class="panel unit-panel">
+          <div class="panel-label">SELECTED UNIT</div>
+          <div id="unitName" class="unit-name">NONE</div>
+          <div id="unitStats" class="unit-stats muted">Choose one of your units.</div>
+          <div id="abilityText" class="ability-text"></div>
+        </section>
+
+        <section class="panel actions-panel">
+          <div class="panel-label">ORDERS</div>
+          <div class="action-grid">
+            <button data-action="move" class="action-btn">MOVE <span>1 EN</span></button>
+            <button data-action="attack" class="action-btn">ATTACK <span>2 EN</span></button>
+            <button data-action="guard" class="action-btn">GUARD <span>1 EN</span></button>
+            <button data-action="ability" class="action-btn">ABILITY <span>3 EN</span></button>
+            <button data-action="hold" class="action-btn wide">HOLD <span>0 EN</span></button>
+          </div>
+        </section>
+
+        <section class="panel plan-panel">
+          <div class="panel-label">YOUR PLAN</div>
+          <div id="planList" class="plan-list"></div>
+        </section>
+
+        <div class="execute-row">
+          <button id="clearPlanBtn" class="secondary-btn">CLEAR</button>
+          <button id="executeBtn" class="execute-btn">EXECUTE TURN</button>
+        </div>
+      </aside>
+    </section>
+
+    <section class="lower-grid">
+      <section class="panel rules-panel">
+        <div class="panel-label">COMBAT INTEL</div>
+        <div class="intel-grid">
+          <div><span class="dot player-dot"></span> Cyan = you</div>
+          <div><span class="dot cpu-dot"></span> Orange = CPU</div>
+          <div><span class="node-icon"></span> Control node = +1 score</div>
+          <div><span class="wall-icon"></span> Walls block movement + line of sight</div>
+        </div>
+        <p class="determinism-note">No dice. No crits. No accuracy rolls. The CPU does not inspect your submitted orders before planning.</p>
+      </section>
+
+      <section class="panel log-panel">
+        <div class="panel-label">EVENT LOG</div>
+        <div id="eventLog" class="event-log" aria-live="polite"></div>
+      </section>
+    </section>
+
+    <footer>
+      <span>VECTOR GRID v0.1.0</span>
+      <span>Same state + same inputs = same result.</span>
+    </footer>
+  </main>
+
+  <div id="resultOverlay" class="result-overlay hidden" role="dialog" aria-modal="true">
+    <div class="result-card">
+      <div class="eyebrow">MATCH COMPLETE</div>
+      <h2 id="resultTitle">VICTORY</h2>
+      <p id="resultReason"></p>
+      <button id="restartBtn" class="execute-btn">RUN IT BACK</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

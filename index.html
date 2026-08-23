@@ -2,133 +2,77 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-  <meta name="theme-color" content="#090d12" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+  <meta name="theme-color" content="#070b10" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Vector Grid" />
+  <meta name="apple-mobile-web-app-title" content="LOCKSTEP" />
   <meta name="format-detection" content="telephone=no" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="description" content="VECTOR GRID — deterministic competitive tactics. No RNG." />
-  <title>VECTOR GRID — iOS v0.2.0</title>
+  <title>PROJECT LOCKSTEP — iPhone Test Build</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="icon.svg" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <main class="shell">
-    <header class="topbar">
-      <div>
-        <div class="eyebrow">DETERMINISTIC TACTICS / iOS BUILD 002</div>
-        <h1>VECTOR GRID</h1>
-      </div>
-      <div class="turn-box">
-        <span id="phaseLabel">PLANNING</span>
-        <strong id="turnLabel">TURN 1</strong>
-      </div>
+  <div id="gameShell">
+    <canvas id="game" width="1280" height="720" aria-label="PROJECT LOCKSTEP combat arena"></canvas>
+
+    <header class="hud topHud">
+      <section class="fighter playerCard">
+        <div class="name">YOU / COMMANDER</div>
+        <div class="bar"><i id="playerHpBar"></i></div>
+        <div class="numbers"><span id="playerHp">160 HP</span><strong id="energy">100 EN</strong></div>
+      </section>
+
+      <section class="centerHud">
+        <div class="brand">PROJECT <strong>LOCKSTEP</strong></div>
+        <div class="coreTrack"><i id="coreFill"></i><b id="coreMarker"></b></div>
+        <div id="coreText">CORE NEUTRAL</div>
+      </section>
+
+      <section class="fighter enemyCard">
+        <div class="name">ENEMY / COMMANDER</div>
+        <div class="bar"><i id="enemyHpBar"></i></div>
+        <div class="numbers"><span id="enemyHp">160 HP</span><strong>AI</strong></div>
+      </section>
     </header>
 
-    <section class="score-strip" aria-label="Match status">
-      <div class="score player-score">
-        <span>YOU</span>
-        <strong id="playerScore">0</strong>
-        <small id="playerEnergy">6 EN</small>
-      </div>
-      <div class="objective-copy">
-        FIRST TO <strong>12</strong> CONTROL
-        <span>or eliminate the enemy squad</span>
-      </div>
-      <div class="score cpu-score">
-        <small id="cpuEnergy">6 EN</small>
-        <strong id="cpuScore">0</strong>
-        <span>CPU</span>
-      </div>
+    <section class="droneRack hud">
+      <button class="droneBtn" data-drone="0"><small>D1</small><b>ASSAULT</b><span id="d0hp">70</span></button>
+      <button class="droneBtn" data-drone="1"><small>D2</small><b>SHIELD</b><span id="d1hp">100</span></button>
+      <button class="droneBtn" data-drone="2"><small>D3</small><b>INTERCEPT</b><span id="d2hp">55</span></button>
+      <div id="commandHint">Tap a drone, then tap the arena to reposition it.</div>
     </section>
 
-    <section class="game-layout">
-      <div class="board-panel">
-        <canvas id="gameCanvas" width="704" height="576" aria-label="VECTOR GRID tactical board"></canvas>
-        <div id="boardHint" class="board-hint">Tap a unit, choose an order, then tap its target.</div>
-      </div>
+    <div id="leftStick" class="stick leftStick"><i></i></div>
+    <div id="rightStick" class="stick rightStick"><i></i><span>FIRE</span></div>
 
-      <aside class="side-panel">
-        <section class="panel unit-panel">
-          <div class="panel-label">SELECTED UNIT</div>
-          <div id="unitName" class="unit-name">NONE</div>
-          <div id="unitStats" class="unit-stats muted">Tap one of your units.</div>
-          <div id="abilityText" class="ability-text"></div>
-        </section>
-
-        <section class="panel actions-panel">
-          <div class="panel-label">ORDERS</div>
-          <div class="action-grid">
-            <button data-action="move" class="action-btn">MOVE <span>1 EN</span></button>
-            <button data-action="attack" class="action-btn">ATTACK <span>2 EN</span></button>
-            <button data-action="guard" class="action-btn">GUARD <span>1 EN</span></button>
-            <button data-action="ability" class="action-btn">ABILITY <span>3 EN</span></button>
-            <button data-action="hold" class="action-btn wide">HOLD <span>0 EN</span></button>
-          </div>
-        </section>
-
-        <section class="panel plan-panel">
-          <div class="panel-label">YOUR PLAN</div>
-          <div id="planList" class="plan-list"></div>
-        </section>
-
-        <div class="execute-row">
-          <button id="clearPlanBtn" class="secondary-btn">CLEAR</button>
-          <button id="executeBtn" class="execute-btn">EXECUTE TURN</button>
-        </div>
-      </aside>
-    </section>
-
-    <details class="mobile-intel">
-      <summary>Combat intel + event log</summary>
-      <section class="lower-grid">
-        <section class="panel rules-panel">
-          <div class="panel-label">COMBAT INTEL</div>
-          <div class="intel-grid">
-            <div><span class="dot player-dot"></span> Cyan = you</div>
-            <div><span class="dot cpu-dot"></span> Orange = CPU</div>
-            <div><span class="node-icon"></span> Node = +1 control</div>
-            <div><span class="wall-icon"></span> Walls block movement + LOS</div>
-          </div>
-          <p class="determinism-note">No dice. No crits. No accuracy rolls. Same state + same inputs = same result.</p>
-        </section>
-
-        <section class="panel log-panel">
-          <div class="panel-label">EVENT LOG</div>
-          <div id="eventLog" class="event-log" aria-live="polite"></div>
-        </section>
-      </section>
-    </details>
-
-    <footer>
-      <span>VECTOR GRID iOS v0.2.0</span>
-      <span>Zero RNG.</span>
-    </footer>
-  </main>
-
-  <div id="resultOverlay" class="result-overlay hidden" role="dialog" aria-modal="true">
-    <div class="result-card">
-      <div class="eyebrow">MATCH COMPLETE</div>
-      <h2 id="resultTitle">VICTORY</h2>
-      <p id="resultReason"></p>
-      <button id="restartBtn" class="execute-btn">RUN IT BACK</button>
+    <div class="abilityRack hud">
+      <button id="guardBtn" class="ability"><small>30 EN</small><b>GUARD</b><span id="guardCd">READY</span></button>
+      <button id="dashBtn" class="ability primary"><small>24 EN</small><b>DASH</b><span id="dashCd">READY</span></button>
     </div>
-  </div>
 
-  <div class="rotate-note" aria-hidden="true">Landscape gives you the full tactical layout.</div>
+    <div class="status hud">
+      <span id="statusText">LIVE COMBAT / ZERO RNG</span>
+      <span class="desktopHelp">WASD move · mouse aim/fire · Space dash · Shift guard</span>
+    </div>
+
+    <div id="result" class="result hidden">
+      <div class="resultCard">
+        <small>MATCH COMPLETE</small>
+        <h1 id="resultTitle">VICTORY</h1>
+        <p id="resultReason"></p>
+        <button id="restart">RUN IT BACK</button>
+      </div>
+    </div>
+
+    <div class="portraitWarning">Rotate your iPhone to landscape.</div>
+  </div>
 
   <script src="game.js"></script>
   <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
-    }
-    document.addEventListener('touchmove', (event) => {
-      if (event.scale && event.scale !== 1) event.preventDefault();
-    }, { passive: false });
+    if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
   </script>
 </body>
 </html>

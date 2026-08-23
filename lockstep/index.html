@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+  <meta name="theme-color" content="#070b10" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Lockstep" />
+  <title>PROJECT LOCKSTEP — iPhone Test Build</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="rotateGate"><div><strong>PROJECT LOCKSTEP</strong><span>Rotate your iPhone to landscape.</span></div></div>
+  <main id="app">
+    <header>
+      <div class="brand"><b>PROJECT LOCKSTEP</b><small>REAL-TIME DETERMINISTIC COMBAT · v0.1.1</small></div>
+      <div class="hudBlock"><span>YOU</span><b id="playerHp">200</b><small>HP</small></div>
+      <div class="energyWrap"><span>ENERGY</span><div class="bar"><i id="energyBar"></i></div><b id="energyText">100</b></div>
+      <div class="coreWrap"><span>CORE</span><b id="coreText">0%</b></div>
+      <div class="hudBlock enemy"><span>ENEMY</span><b id="enemyHp">200</b><small>HP</small></div>
+    </header>
+
+    <section id="stageWrap">
+      <canvas id="game" width="1280" height="720" aria-label="Project Lockstep battlefield"></canvas>
+      <div id="message">Destroy the enemy commander or overload the Core.</div>
+      <div id="leftStick" class="stick"><i></i></div>
+      <div id="rightStick" class="stick"><i></i></div>
+      <div class="buttons">
+        <button id="dashBtn">DASH<span>24 EN</span></button>
+        <button id="guardBtn">GUARD<span>30 EN</span></button>
+      </div>
+      <div class="droneTray">
+        <button class="drone active" data-drone="0"><b>A</b><span>ASSAULT</span><small id="d0">80</small></button>
+        <button class="drone" data-drone="1"><b>S</b><span>SHIELD</span><small id="d1">110</small></button>
+        <button class="drone" data-drone="2"><b>I</b><span>INTERCEPT</span><small id="d2">65</small></button>
+      </div>
+      <button id="restart" hidden>RUN IT BACK</button>
+    </section>
+
+    <footer><span>Left thumb: move · Right thumb: aim/fire</span><span>Tap drone → tap battlefield to command it</span><span>Zero RNG</span></footer>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>

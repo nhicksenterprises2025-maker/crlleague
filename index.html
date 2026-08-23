@@ -2,16 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#090d12" />
-  <title>VECTOR GRID — v0.1.0</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Vector Grid" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="description" content="VECTOR GRID — deterministic competitive tactics. No RNG." />
+  <title>VECTOR GRID — iOS v0.2.0</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icon.svg" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <main class="shell">
     <header class="topbar">
       <div>
-        <div class="eyebrow">DETERMINISTIC TACTICS / BUILD 001</div>
+        <div class="eyebrow">DETERMINISTIC TACTICS / iOS BUILD 002</div>
         <h1>VECTOR GRID</h1>
       </div>
       <div class="turn-box">
@@ -40,14 +49,14 @@
     <section class="game-layout">
       <div class="board-panel">
         <canvas id="gameCanvas" width="704" height="576" aria-label="VECTOR GRID tactical board"></canvas>
-        <div id="boardHint" class="board-hint">Select a unit, choose an order, then choose its target.</div>
+        <div id="boardHint" class="board-hint">Tap a unit, choose an order, then tap its target.</div>
       </div>
 
       <aside class="side-panel">
         <section class="panel unit-panel">
           <div class="panel-label">SELECTED UNIT</div>
           <div id="unitName" class="unit-name">NONE</div>
-          <div id="unitStats" class="unit-stats muted">Choose one of your units.</div>
+          <div id="unitStats" class="unit-stats muted">Tap one of your units.</div>
           <div id="abilityText" class="ability-text"></div>
         </section>
 
@@ -74,27 +83,30 @@
       </aside>
     </section>
 
-    <section class="lower-grid">
-      <section class="panel rules-panel">
-        <div class="panel-label">COMBAT INTEL</div>
-        <div class="intel-grid">
-          <div><span class="dot player-dot"></span> Cyan = you</div>
-          <div><span class="dot cpu-dot"></span> Orange = CPU</div>
-          <div><span class="node-icon"></span> Control node = +1 score</div>
-          <div><span class="wall-icon"></span> Walls block movement + line of sight</div>
-        </div>
-        <p class="determinism-note">No dice. No crits. No accuracy rolls. The CPU does not inspect your submitted orders before planning.</p>
-      </section>
+    <details class="mobile-intel">
+      <summary>Combat intel + event log</summary>
+      <section class="lower-grid">
+        <section class="panel rules-panel">
+          <div class="panel-label">COMBAT INTEL</div>
+          <div class="intel-grid">
+            <div><span class="dot player-dot"></span> Cyan = you</div>
+            <div><span class="dot cpu-dot"></span> Orange = CPU</div>
+            <div><span class="node-icon"></span> Node = +1 control</div>
+            <div><span class="wall-icon"></span> Walls block movement + LOS</div>
+          </div>
+          <p class="determinism-note">No dice. No crits. No accuracy rolls. Same state + same inputs = same result.</p>
+        </section>
 
-      <section class="panel log-panel">
-        <div class="panel-label">EVENT LOG</div>
-        <div id="eventLog" class="event-log" aria-live="polite"></div>
+        <section class="panel log-panel">
+          <div class="panel-label">EVENT LOG</div>
+          <div id="eventLog" class="event-log" aria-live="polite"></div>
+        </section>
       </section>
-    </section>
+    </details>
 
     <footer>
-      <span>VECTOR GRID v0.1.0</span>
-      <span>Same state + same inputs = same result.</span>
+      <span>VECTOR GRID iOS v0.2.0</span>
+      <span>Zero RNG.</span>
     </footer>
   </main>
 
@@ -107,6 +119,16 @@
     </div>
   </div>
 
+  <div class="rotate-note" aria-hidden="true">Landscape gives you the full tactical layout.</div>
+
   <script src="game.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+    }
+    document.addEventListener('touchmove', (event) => {
+      if (event.scale && event.scale !== 1) event.preventDefault();
+    }, { passive: false });
+  </script>
 </body>
 </html>
